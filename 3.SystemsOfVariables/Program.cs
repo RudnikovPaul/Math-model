@@ -19,12 +19,10 @@ namespace Job_3
 
 		public static void Main (string[] args)
 		{
-			XRowList = maths.Series(ProbMatrix, true);
-			YRowList = maths.Series(ProbMatrix, false);
 			for (var i = 0; i < 100; i++)  // генерируем случайные числа
 			{				
-				coordinates.Add(maths.Rand(XRowList, Xvars));
-				coordinates.Add(maths.Rand(YRowList, Yvars));
+				coordinates.Add(maths.Rand(maths.Series(ProbMatrix, true), Xvars));
+				coordinates.Add(maths.Rand(maths.Series(ProbMatrix, false), Yvars));
 			}
 			analyze();
 		}
