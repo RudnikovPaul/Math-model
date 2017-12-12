@@ -12,7 +12,7 @@ public partial class MainWindow: Gtk.Window
 	public MainWindow () : base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
-		entry1.Text = "5";
+		entry1.Text = "5";  // инициализация переменных
 		entry2.Text = "15";
 		entry3.Text = "1000";
 		setColor();
@@ -20,9 +20,11 @@ public partial class MainWindow: Gtk.Window
 
 	protected void generateButtonClicked (object sender, EventArgs e)
 	{
-		numbers = Generate.equalGenerator(Convert.ToInt32(entry3.Text), Convert.ToDouble(entry1.Text), Convert.ToDouble(entry2.Text));
+		numbers = Generate.equalGenerator(Convert.ToInt32(entry3.Text),
+			Convert.ToDouble(entry1.Text), Convert.ToDouble(entry2.Text));
 		Array.Resize(ref numbers, numbers.Length);
-		Test.Frequency (Convert.ToDouble(entry1.Text), Convert.ToDouble(entry2.Text), numbers, out realData, out scale);
+		Test.Frequency (Convert.ToDouble(entry1.Text),
+			Convert.ToDouble(entry2.Text), numbers, out realData, out scale);
 		Test.MathAndDisp (numbers, out mathW, out disp);
 		label12.Text = Convert.ToString(mathW);
 		label18.Text = Convert.ToString(disp);
@@ -30,23 +32,26 @@ public partial class MainWindow: Gtk.Window
 		drawingarea1.ExposeEvent += OnExposed; 
 	}	
 
-	public void setColor()
+	public void setColor()  // изменение фона области рисования
 	{
 		Gdk.Color col = new Gdk.Color();
 		Gdk.Color.Parse("pink", ref col);
 		drawingarea1.ModifyBg(StateType.Normal, col);
 	}
 
+	// создание графика в области рисования
 	public void OnExposed (object o, ExposeEventArgs args)
 	{
 		double bp = scale;
 
+		// масштабирование графика амплитуде значений
 		label7.Text = Convert.ToString(bp);
 		label13.Text = Convert.ToString(bp-(bp/5));
 		label14.Text = Convert.ToString(bp-(bp/5)*2);
 		label15.Text = Convert.ToString(bp-(bp/5)*3);
 		label16.Text = Convert.ToString(bp-(bp/5)*4);
 
+		// масштабирование графика по диапазону значений
 		double St = Convert.ToDouble(entry1.Text);
 		double En = Convert.ToDouble(entry2.Text);
 		label23.Text = (St).ToString("00.0");
@@ -61,11 +66,15 @@ public partial class MainWindow: Gtk.Window
 		label33.Text = (En - (En - St)/10).ToString("00.0");
 		label28.Text = (En).ToString("00.0");
 
-		for (int x = 40; x < 170; x+=40) drawingarea1.GdkWindow.DrawLine (drawingarea1.Style.BaseGC(StateType.Normal), 0, x, 200, x);
+		// рисование горизонтальных линий для удобства восприятия графика
+		for (int x = 40; x < 170; x+=40) 
+			drawingarea1.GdkWindow.DrawLine (drawingarea1.Style.BaseGC(StateType.Normal), 0, x, 200, x);
 			
+		// вывод столбцов графика
 		int xx = 3;
 		for (int y = 0; y < 10; y++) {
-			drawingarea1.GdkWindow.DrawRectangle (drawingarea1.Style.BaseGC(StateType.Normal), true, xx, 200 - realData[y]+2, 16, 200);
+			drawingarea1.GdkWindow.DrawRectangle 
+				(drawingarea1.Style.BaseGC(StateType.Normal), true, xx, 200 - realData[y]+2, 16, 200);
 			xx += 19;
 		}
 	}

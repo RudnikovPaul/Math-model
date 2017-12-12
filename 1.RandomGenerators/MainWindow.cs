@@ -12,35 +12,40 @@ public partial class MainWindow: Gtk.Window
 	public MainWindow () : base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
-		entry3.Text = "100";
+		entry3.Text = "100";	// инициализация переменных
 		entry4.Text = "10";
 		entry1.Text = "98";
 		entry2.Text = "76";
 		setColor();
 	}
 
-	public void setColor()
+	public void setColor()  // изменение фона области рисования
 	{
 		Gdk.Color col = new Gdk.Color();
 		Gdk.Color.Parse("pink", ref col);
 		drawingarea1.ModifyBg(StateType.Normal, col);
 	}
 
-	public void OnExposed (object o, ExposeEventArgs args)
+	public void OnExposed (object o, ExposeEventArgs args)  // создание графика в области рисования
 	{
 		double bp = scale;
 
+		// масштабирование графика
 		label7.Text = Convert.ToString(bp);
 		label13.Text = Convert.ToString(bp-(bp/5));
 		label14.Text = Convert.ToString(bp-(bp/5)*2);
 		label15.Text = Convert.ToString(bp-(bp/5)*3);
 		label16.Text = Convert.ToString(bp-(bp/5)*4);
 
-		for (int x = 40; x < 170; x+=40) drawingarea1.GdkWindow.DrawLine (drawingarea1.Style.BaseGC(StateType.Normal), 0, x, 200, x);
-					
+		// рисование горизонтальных линий для удобства восприятия графика
+		for (int x = 40; x < 170; x+=40)
+			drawingarea1.GdkWindow.DrawLine (drawingarea1.Style.BaseGC(StateType.Normal), 0, x, 200, x);
+		
+		// вывод столбцов графика
 		int xx = 3;
 		for (int y = 0; y < 10; y++) {
-			drawingarea1.GdkWindow.DrawRectangle (drawingarea1.Style.BaseGC(StateType.Normal), true, xx, 200 - realData[y]+2, 16, 200);
+			drawingarea1.GdkWindow.DrawRectangle
+				(drawingarea1.Style.BaseGC(StateType.Normal), true, xx, 200 - realData[y]+2, 16, 200);
 			xx += 19;
 		}
 	}
@@ -51,26 +56,30 @@ public partial class MainWindow: Gtk.Window
 		a.RetVal = true;
 	}
 
-	protected void methodSquareCenter (object sender, EventArgs e)
+	protected void methodSquareCenter (object sender, EventArgs e)  // метод середины квадрата
 	{		
 		numbers = Generate.squareMethod(Convert.ToInt32(entry3.Text));
 		Array.Resize(ref numbers, numbers.Length);
 		textview3.Buffer.Text = "";
-		if (numbers.Length < 2000) foreach (double item in numbers) textview3.Buffer.Text = textview3.Buffer.Text + Convert.ToString(item) + "  ";
+		if (numbers.Length < 2000) // если количество чисел слишком большое не выводим их в текстбокс.
+			foreach (double item in numbers) 
+				textview3.Buffer.Text = textview3.Buffer.Text + Convert.ToString(item) + "  ";
         incommonMethod ();
 	}
 
-	protected void multipleMethod (object sender, EventArgs e)
+	protected void multipleMethod (object sender, EventArgs e)  // мультипликативный конгруэнтный метод
 	{
 		numbers = Generate.multiplyMethod(Convert.ToInt32(entry1.Text), Convert.ToInt32(entry2.Text));		
 		Array.Resize(ref numbers, numbers.Length);
 		string text = "";
-		if (numbers.Length < 2000) foreach (double item in numbers) text += Convert.ToString(item) + "  ";      
+		if (numbers.Length < 2000)
+			foreach (double item in numbers)
+				text += Convert.ToString(item) + "  ";      
 		textview5.Buffer.Text = text;
         incommonMethod (); 
 	}
 
-	private void incommonMethod ()
+	private void incommonMethod ()  // код, общий для обоих методов
 	{
         double MathW, Disp;
         Test.MathAndDisp(numbers, out MathW, out Disp);
@@ -78,7 +87,7 @@ public partial class MainWindow: Gtk.Window
         label10.Text = "D(z) = " + Disp;
 		
 		Test.Frequency (numbers, out realData, out scale);
-		label18.Text = Test.Independency(numbers, Convert.ToInt32(entry4.Text));
+		label18.Text = "R = " + Test.Independency(numbers, Convert.ToInt32(entry4.Text));
 
 		setColor();
 		drawingarea1.ExposeEvent += OnExposed;

@@ -7,7 +7,9 @@ namespace Job_3
 	{
 		private Random rnd = new Random();
 		private double MX, MY, MXY;
+		private bool dir2 = false;
 
+		// генератор равномерно распределенных случайных чисел
 		public void Rand(List<double> RowList, double[] Value, out double result)
 		{
 			var x = rnd.NextDouble();
@@ -16,6 +18,7 @@ namespace Job_3
 			else result = Value[2];
 		}
 
+		// сумма матрицы по столбцам либо строкам
 		public List<double> Series(double[,] matrix, bool dir)
 		{
 			var result = new List<double>();
@@ -32,43 +35,49 @@ namespace Job_3
 			return result;
 		}
 
+		// математическое ожидание для одного списка
 		public double Maths(double[] Value, List<double> RowList, bool dir)
 		{
 			double result = 0;
-			for (var i = 0; i < 3; i++)	result += Value[i] * RowList[i];
+			for (var i = 0; i < 3; i++)	
+			{
+				if (dir2) result += Math.Pow(Value[i], 2) * RowList[i];
+				else result += Value[i] * RowList[i];
+			}
 			if (dir) MX = result;
 			else MY = result;
 			return result;
 		}
 
-		public double MathXY(double[] XValues, double[] YValues, double[,] probabilityMatrix)
+		// математическое ожидание для двух списков
+		public double MathXY(double[] XValues, double[] YValues,
+			double[,] ProbMatrix)
 		{
 			double result = 0;
 			for (var i = 0; i < 3; i++)
 				for (var j = 0; j < 3; j++)
-					result += XValues[i] * YValues[j] * probabilityMatrix[i, j];
+					result += XValues[i] * YValues[j] * ProbMatrix[i, j];
 			MXY = result;
 			return result;
 		}
 
-		private double SquareMath(double[] Value, List<double> RowList)
-		{
-			double result = 0;
-			for (var i = 0; i < 3; i++) result += Math.Pow(Value[i], 2) * RowList[i];
-			return result;
-		}
-
+		// дисперсия
 		public double Dis(double[] XValue, List<double> XRowList, bool dir)
 		{
-			if (dir) return SquareMath(XValue, XRowList) - Math.Pow(Maths(XValue, XRowList, true), 2);
-			else return SquareMath(XValue, XRowList) - Math.Pow(Maths(XValue, XRowList, false), 2);
+			dir2 = true;
+			if (dir) 
+				return Maths(XValue, XRowList, dir) - Math.Pow(Maths(XValue, XRowList, dir), 2);
+			else 
+				return Maths(XValue, XRowList, dir) - Math.Pow(Maths(XValue, XRowList, dir), 2);
+			dir2 = false;
 		}
 
-		public List<double> Density(List<double> ResultXYofValueList, bool dir)
+		// определение плотности распределения для одного списка
+		public List<double> Density(List<double> XY, bool dir)
 		{
 			var resultList = new List<double>();
 			for (var i = 0; i < 3; i++) resultList.Add(0);
-			foreach (var value in ResultXYofValueList) {
+			foreach (var value in XY) {
 				if (dir)
 				{
 					if (value == 7.3)  { resultList [0]++; break; }
@@ -85,14 +94,15 @@ namespace Job_3
 			return resultList;
 		}
 
-		public List<double> XYDensity(List<double> ResultXYofValueList, double[]XValue, double[]YValue)
+		// определение плотности распределения для двух списков
+		public List<double> XYDensity(List<double> XY, double[]XValue, double[]YValue)
 		{
 			var resultXYList = new List<double>();
 			for (var i = 0; i < 9; i++) resultXYList.Add(0);
-			for (var i = 0; i < ResultXYofValueList.Count; i = i + 2)
+			for (var i = 0; i < XY.Count; i = i + 2)
 			{
-				var x = ResultXYofValueList[i];
-				var y = ResultXYofValueList[i + 1];
+				var x = XY[i];
+				var y = XY[i + 1];
 				for (var q = 0; q < 3; q++)
 				{
 					if (Equals(x, XValue[q]))
@@ -106,6 +116,7 @@ namespace Job_3
 			return resultXYList;
 		}
 
+		// определение корреляции
 		public double Correlation()
 		{ 
 			return MXY - MX * MY;
