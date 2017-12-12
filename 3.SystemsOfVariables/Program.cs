@@ -8,8 +8,8 @@ namespace Job_3
 		static Mathem maths = new Mathem();
 
 		// задаем начальные значения:
-		private static readonly double[,] ProbMatrix = { { 0.12, 0.22, 0.06 }, 
-			{ 0.04, 0.12, 0.14 }, { 0.13, 0.13, 0.04 } };
+		private static readonly double[,] ProbMatrix = { { 0.13, 0.13, 0.04 }, 
+			{ 0.04, 0.12, 0.14 }, { 0.12, 0.22, 0.06 } };
 		private static double[] Xvars = { 7.3, 9, 13.8 };
 		private static double[] Yvars = { 0.2, 2.6, 6.4 };
 		
@@ -21,7 +21,6 @@ namespace Job_3
 		{
 			XRowList = maths.Series(ProbMatrix, true);
 			YRowList = maths.Series(ProbMatrix, false);
-			double X, Y;
 			for (var i = 0; i < 100; i++)  // генерируем случайные числа
 			{				
 				coordinates.Add(maths.Rand(XRowList, Xvars));
