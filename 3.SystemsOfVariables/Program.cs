@@ -51,12 +51,12 @@ namespace Job_3
 		}
 
 		private static void XYDistribution(List<double> Density, string chartName)
-        {
-            string[] XYvars = {"7.3|0.2", "7.3|2.6", "7.3|6.4", 
-			"9|0.2", "9|2.6", "9|6.4", "13.8|0.2", "13.8|2.6", "13.8|6.4"};
-            Console.WriteLine (chartName + ": ");
-            for (var i = 0; i < Density.Count; i++)
-            	Console.WriteLine (XYvars[i] + "   " + Density[i]);
-        }
+		{
+		    string[] XYvars = {"7.3|0.2", "7.3|2.6", "7.3|6.4", 
+				"9|0.2", "9|2.6", "9|6.4", "13.8|0.2", "13.8|2.6", "13.8|6.4"};
+		    Console.WriteLine (chartName + ": ");
+		    for (var i = 0; i < Density.Count; i++)
+			Console.WriteLine (XYvars[i] + "   " + Density[i]);
+		}
 	}
 }
