@@ -35,18 +35,19 @@ namespace Job_3
 			return result;
 		}
 
-		// математическое ожидание для одного списка
-		public double Maths(double[] Value, List<double> RowList, bool dir)
+		// математическое ожидание для одного списка и дисперсия
+		public void MathAndDis(double[] Value, List<double> RowList, bool dir, out double resultM, out double resultD)
 		{
-			double result = 0;
+			double resultL = 0;
+
 			for (var i = 0; i < 3; i++)	
 			{
-				if (dir2) result += Math.Pow(Value[i], 2) * RowList[i];
-				else result += Value[i] * RowList[i];
+				resultL += Math.Pow(Value[i], 2) * RowList[i];
+				resultM += Value[i] * RowList[i];
 			}
-			if (dir) MX = result;
-			else MY = result;
-			return result;
+			if (dir) MX = resultM;
+			else MY = resultM;
+			resultD = resultL - Math.Pow(resultL, 2);
 		}
 
 		// математическое ожидание для двух списков
@@ -61,16 +62,6 @@ namespace Job_3
 			return result;
 		}
 
-		// дисперсия
-		public double Dis(double[] XValue, List<double> XRowList, bool dir)
-		{
-			dir2 = true;
-			if (dir) 
-				return Maths(XValue, XRowList, dir) - Math.Pow(Maths(XValue, XRowList, dir), 2);
-			else 
-				return Maths(XValue, XRowList, dir) - Math.Pow(Maths(XValue, XRowList, dir), 2);
-			dir2 = false;
-		}
 
 		// определение плотности распределения для одного списка
 		public List<double> Density(List<double> XY, bool dir)

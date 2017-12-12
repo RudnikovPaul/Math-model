@@ -19,7 +19,8 @@ namespace Job_3
 
 		public static void Main (string[] args)
 		{
-			CalculateRows();
+			XRowList = maths.Series(ProbMatrix, true);
+			YRowList = maths.Series(ProbMatrix, false);
 			double X, Y;
 			for (var i = 0; i < 100; i++)  // генерируем случайные числа
 			{				
@@ -31,18 +32,14 @@ namespace Job_3
 			analyze();
 		}
 
-		private static void CalculateRows()
-		{
-			XRowList = maths.Series(ProbMatrix, true);
-			YRowList = maths.Series(ProbMatrix, false);
-		}
-
 		private static void analyze()  //  вывод значений оценок
 		{
-			Console.WriteLine ("M(X)  = " + maths.Maths(Xvars, XRowList, true));
-			Console.WriteLine ("M(Y)  = " + maths.Maths(Yvars, XRowList, false));
-			Console.WriteLine ("D(X)  = " + maths.Dis(Xvars, XRowList, true));
-			Console.WriteLine ("D(Y)  = " + maths.Dis(Yvars, YRowList, false));
+			maths.Maths(Yvars, YRowList, true, out math, out disp);
+			Console.WriteLine ("M(X)  = " + math);
+			Console.WriteLine ("D(X)  = " + disp);
+			maths.Maths(Yvars, YRowList, false, out math, out disp);
+			Console.WriteLine ("M(Y)  = " + math);
+			Console.WriteLine ("D(Y)  = " + disp);
 			Console.WriteLine ("M(XY) = " + maths.MathXY(Xvars, Yvars, ProbMatrix));
 			Console.WriteLine ("corr  = " + maths.Correlation());
 
