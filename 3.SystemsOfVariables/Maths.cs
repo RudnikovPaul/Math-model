@@ -7,21 +7,22 @@ namespace Job_3
 	{
 		private Random rnd = new Random();
 		private double MX, MY, MXY;
-		private bool dir2 = false;
 
 		// генератор равномерно распределенных случайных чисел
-		public void Rand(List<double> RowList, double[] Value, out double result)
+		public double Rand(List<double> RowList, double[] Value)
 		{
 			var x = rnd.NextDouble();
+
 			if (x <= RowList[0]) result = Value[0];
-			else if (x > RowList[0] && x < RowList[0] + RowList[1]) result = Value[1];
-			else result = Value[2];
+			else if (x > RowList[0] && x < RowList[0] + RowList[1]) return Value[1];
+			else return Value[2];
 		}
 
 		// сумма матрицы по столбцам либо строкам
 		public List<double> Series(double[,] matrix, bool dir)
 		{
 			var result = new List<double>();
+
 			for (var i = 0; i < 3; i++)
 			{
 				double sir = 0;
@@ -51,10 +52,10 @@ namespace Job_3
 		}
 
 		// математическое ожидание для двух списков
-		public double MathXY(double[] XValues, double[] YValues,
-			double[,] ProbMatrix)
+		public double MathXY(double[] XValues, double[] YValues, double[,] ProbMatrix)
 		{
 			double result = 0;
+
 			for (var i = 0; i < 3; i++)
 				for (var j = 0; j < 3; j++)
 					result += XValues[i] * YValues[j] * ProbMatrix[i, j];
@@ -62,11 +63,11 @@ namespace Job_3
 			return result;
 		}
 
-
 		// определение плотности распределения для одного списка
 		public List<double> Density(List<double> XY, bool dir)
 		{
 			var resultList = new List<double>();
+
 			for (var i = 0; i < 3; i++) resultList.Add(0);
 			foreach (var value in XY) {
 				if (dir)
@@ -86,9 +87,10 @@ namespace Job_3
 		}
 
 		// определение плотности распределения для двух списков
-		public List<double> XYDensity(List<double> XY, double[]XValue, double[]YValue)
+		public List<double> XYDensity(List<double> XY, double[] XValue, double[] YValue)
 		{
 			var resultXYList = new List<double>();
+			
 			for (var i = 0; i < 9; i++) resultXYList.Add(0);
 			for (var i = 0; i < XY.Count; i = i + 2)
 			{

@@ -24,10 +24,8 @@ namespace Job_3
 			double X, Y;
 			for (var i = 0; i < 100; i++)  // генерируем случайные числа
 			{				
-				maths.Rand(XRowList, Xvars, out X);
-				maths.Rand(YRowList, Yvars, out Y);
-				coordinates.Add(X);
-				coordinates.Add(Y);
+				coordinates.Add(maths.Rand(XRowList, Xvars));
+				coordinates.Add(maths.Rand(YRowList, Yvars));
 			}
 			analyze();
 		}
@@ -48,8 +46,7 @@ namespace Job_3
 			XYDistribution(maths.XYDensity(coordinates, Xvars, Yvars), "Плотность XY");
 		}
 
-		private static void Distribution(List<double> Density, 
-			double[] valueList, string chartName)
+		private static void Distribution(List<double> Density, double[] valueList, string chartName)
 		{
 			Console.WriteLine (chartName + ": ");
 			for (var i = 0; i < Density.Count; i++)
